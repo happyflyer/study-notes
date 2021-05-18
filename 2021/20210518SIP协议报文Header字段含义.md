@@ -1,0 +1,42 @@
+# SIP 协议报文 Header 字段含义
+
+- Call-ID
+  - 由会话发起方生成
+  - 属于同一会话过程的报文，其 Call-ID 字段应相同
+  - 其应作为区别不同会话的最重要标示
+  - `Call-ID: asd88asd77a@1.2.3.4`
+- From
+  - 表示呼叫的发起者
+  - 应携带 tag 字段，并且在同一会话过程中，tag 保持一致
+  - `From: sip:user1@domain.com;tag=49583`
+- To
+  - 表示呼叫的接收者
+  - 应携带 tag 字段，并且在同一会话过程中，tag 保持一致
+  - `To: sip:user2@domain.com`
+- Via
+  - Via 头域是被服务器插入 request 中，用来检查路由环的
+  - 并且可以使 response 根据 via 找到返回的路
+  - 必须有 branch 字段，按照 IETF RFC 3261 规定，该字段应以“z9hG4bK”开头，
+  - 并且每次源联网单元每次请求消息中 branch 字段取值应不相同
+  - 目的联网单元回复中，该字段取值应相同
+  - `Via: SIP/2.0/TCP user1pc.domain.com;branch=z9hG4bK776sgdkse`
+- CSeq
+  - 请求消息与应答消息的 CSeq 字段应一致
+  - 在同一会话内，相同方法，每次发起新请求时 CSeq 取值应增加 1
+  - `CSeq: 1 Register`
+- Max-Forwards
+  - 用于表示这个包最多可以传送多少跳
+  - 每经过一跳都会减一当 Max-Forwards==0 系统会返回 483。默认为 70
+  - `Max-Forwards: 70`
+- Contact
+  - 包含源的 URI 信息，用来给响应方直接和源建立连接用
+  - 需要响应的请求消息均应携带 Contact 头域，Contact 头域应填写要求回复的地址
+  - 多级代理转发过程中，Contact 头域应填写最终会话发起方地址或接收方地址
+  - 转发过程中 Contact 内容应保持不变
+  - `Contact: sip:192.168.100.1:1111`
+- Content-Type
+  - 指明消息体的类型 (SDP 会话描述协议）
+  - `Content-Type: text/plain；Content-Type: application/sdp; Content-Type: application/cpim;`
+- Content-Length
+  - 指明消息体的字节大小
+  - `Content-Length: 18`
