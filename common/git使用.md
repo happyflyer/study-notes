@@ -1,7 +1,7 @@
 # git 使用
 
-- [Git 教程](https://www.liaoxuefeng.com/wiki/896043488029600)
-- [Git 远程操作详解](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
+- [Git 教程 - 廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/896043488029600)
+- [Git 远程操作详解 - 阮一峰的网络日志](http://www.ruanyifeng.com/blog/2014/06/git_remote.html)
 
 ## 1. 全局配置
 
@@ -14,19 +14,34 @@ git config --global user.email "your_email@example.com"
 ```
 
 ```bash
-# 提交时转换为LF，检出时不转换
+# 提交时转换为LF，检出时不转换（推荐配置）
 git config --global core.autocrlf input
+# 提交时转换为LF，检出时转换为CRLF
+git config --global core.autocrlf true
+# 提交检出均不转换
+git config --global core.autocrlf false
 ```
 
 ```bash
-# 拒绝提交包含混合换行符的文件
+# 拒绝提交包含混合换行符的文件（推荐配置）
 git config --global core.safecrlf true
+# 允许提交包含混合换行符的文件
+git config --global core.safecrlf false
+# 提交包含混合换行符的文件时给出警告
+git config --global core.safecrlf warn
 ```
 
 ## 2. 日常使用
 
+- 工作区
+- 暂存区
+- 版本库
+
 ```bash
+# ssh
 git clone git@github.com:github/gitignore.git
+# https
+git clone https://github.com/github/gitignore.git
 ```
 
 ```bash
@@ -53,22 +68,23 @@ git diff doc.txt
 
 ```bash
 git log
-```
-
-```bash
 git log --pretty=oneline
-```
-
-```bash
+# 分支图
 git log --oneline --graph --decorate --all
 ```
 
 ```bash
+# 命令历史
 git reflog
 ```
 
 ```bash
+# 回退到指定提交
 git reset --hard commit_id
+# 回退到上个版本
+git reset --hard HEAD^
+# 回退到前3次的提交
+git reset --hard HEAD~3
 ```
 
 ## 4. 撤销和丢弃
@@ -105,99 +121,99 @@ rm doc.txt
 git checkout -- doc.txt
 ```
 
-## 6. 分支
+## 6. 分支和标签
 
 ```bash
+# 创建并切换分支
 git checkout -b dev
-```
-
-```bash
+# 切换分支
 git checkout dev
-```
-
-```bash
-git checkout master
 ```
 
 ```bash
 git merge dev
 ```
 
+```bash
+git tag 0.1.0
+git checkout 0.1.0
+```
+
+```bash
+# 删除标签
+git tag -d 0.1.0
+git push origin :refs/tags/0.1.0
+```
+
 ## 7. 关联远程仓库
+
+- 本地仓库
+- 远程仓库
 
 ```bash
 ssh-keygen -t rsa -C "your_message"
 ```
 
-将公钥 `~/.ssh/id_rsa.pub` 添加到 github / gitlab / gitee / .. 账户的 SSH 公钥。
+将公钥 `~/.ssh/id_rsa.pub` 添加到 github/gitlab/gitee/.. 账户的 SSH 公钥。
 
 ```bash
 ssh -T git@github.com
 ```
 
 ```bash
-git remote add origin git@server_name:username/repo_name.git
-```
-
-```bash
-git remote set-url origin git@server_name:username/repo_name.git
-```
-
-```bash
 git remote
-```
-
-```bash
 git remote -v
+git remote add origin git@server_name:username/repo_name.git
+git remote set-url origin git@server_name:username/repo_name.git
+git remote rename origin github
 ```
 
 ## 8. 拉取和推送
 
-### 8.1. pull
+### 8.1. 拉取
 
 ```bash
+# git pull <远程主机名> <远程分支名>:<本地分支名>
 git pull origin next:master
+# pull = fetch + merge
+git fetch origin dev:dev
 ```
 
-pull = fetch + merge
-
-> git pull <远程主机名> <远程分支名>:<本地分支名>
+### 8.2. 推送
 
 ```bash
+# git push <远程主机名> <本地分支名>:<远程分支名>
+git push origin master
+# 首次推送分支
 git push -u origin master
 ```
 
-### 8.2. push
-
 ```bash
-git push origin master
-```
-
-```bash
+# 推送所有分支
 git push origin --all
-```
-
-```bash
-git push origin --delete dev
-```
-
-```bash
+# 推送所有标签
 git push origin --tags
 ```
 
-> git push <远程主机名> <本地分支名>:<远程分支名>
+```bash
+# 删除远程分支
+git push origin --delete dev
+```
 
-## 9. 标签
+## 9. 子模块
+
+- [git-submodule - 摸鱼划水](https://blog.justwe.site/post/git-submodule/)
 
 ```bash
-git tag 0.1.0
+git submodule add git@github.com:github/gitignore.git
 ```
 
 ```bash
-git checkout 0.1.0
+git submodule update --init --recursive
 ```
 
 ```bash
-git tag -d 0.1.0
-git push origin :refs/tags/0.1.0
+# 删除子模块
+git rm submodule_name
+git submodule deinit submodule_name
 ```
