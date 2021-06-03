@@ -1,6 +1,7 @@
 # docker 使用
 
 - [Docker 教程](https://www.runoob.com/docker/docker-hello-world.html)
+- [docker search 时列出 tag](http://suntus.github.io/2017/12/07/docker%20search时列出tag)
 
 ## 1. 容器使用
 
@@ -110,6 +111,11 @@ docker images
 
 ```bash
 docker search httpd
+```
+
+```bash
+# 获取镜像标签
+./docker-show-repo-tags.sh ubuntu centos
 ```
 
 ### 2.2. 拉取
