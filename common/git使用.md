@@ -31,6 +31,11 @@ git config --global core.safecrlf false
 git config --global core.safecrlf warn
 ```
 
+```bash
+# 避免中文乱码（推荐配置）
+git config --global core.quotepath false
+```
+
 ## 2. 日常使用
 
 - 工作区
